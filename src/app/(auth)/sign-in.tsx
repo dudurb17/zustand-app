@@ -1,20 +1,26 @@
 import { useUserStore } from '@/src/store/useUserStore';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import { replace } from 'expo-router/build/global-state/routing';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function LoginScreen() {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const {users}=useUserStore()
-  console.log(users)
+  const [user, setUser] = useState({
+    email:"",
+    password:""
+  });
+  const {users, login, isLogged}=useUserStore()
 
+useEffect(()=>{
+  if(isLogged) router.replace('/home')
+
+},[isLogged])
   const handleLogin = () => {
-    if (login === '' || password === '') {
+    if (user.email === '' || user.password === '') {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
     } else {
-      Alert.alert('Sucesso', `Bem-vindo, ${login}!`);
-    }
+      login(user)
+    } 
   };
 
   return (
@@ -22,15 +28,15 @@ export default function LoginScreen() {
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
-        placeholder="Login"
-        value={login}
-        onChangeText={setLogin}
+        placeholder="e-mail"
+        value={user.email}
+        onChangeText={(value)=>setUser({...user, email:value})}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        value={user.password}
+        onChangeText={(value)=>setUser({...user, password:value})}
         secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
