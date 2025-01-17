@@ -1,3 +1,4 @@
+import { useUserStore } from '@/src/store/useUserStore';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -5,6 +6,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 export default function LoginScreen() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const {users}=useUserStore()
+  console.log(users)
 
   const handleLogin = () => {
     if (login === '' || password === '') {

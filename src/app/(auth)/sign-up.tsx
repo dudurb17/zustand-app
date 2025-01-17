@@ -1,17 +1,21 @@
+import { useUserStore } from '@/src/store/useUserStore';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function RegisterScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState({
+    name:"", 
+    email:"",
+    password:""
+  });
+  const {addUser} = useUserStore();
 
   const handleRegister = () => {
-    if (name === '' || email === '' || password === '') {
+    if (user.name === '' ||user.email === '' || user.password === '') {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
     } else {
+      addUser(user)
       Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-      // Aqui você pode adicionar a lógica para salvar os dados
     }
   };
 
@@ -21,21 +25,21 @@ export default function RegisterScreen() {
       <TextInput
         style={styles.input}
         placeholder="Nome"
-        value={name}
-        onChangeText={setName}
+        value={user.name}
+        onChangeText={(value)=> setUser({...user, name:value})}
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={user.email}
+        onChangeText={(value)=> setUser({...user, email:value})}
         keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
         placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
+        value={user.password}
+        onChangeText={(value)=> setUser({...user, password:value})}
         secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>

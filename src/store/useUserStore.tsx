@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 type User ={
-  id:number;
   name:string;
   email:string;
   password:string;
@@ -12,9 +11,12 @@ type UserStore ={
   addUser:(user:User)=>void;
 }
 
-const useUserStore = create<UserStore>((set)=>({
+export const useUserStore = create<UserStore>((set)=>({
   users:[],
-  addUser:(user)=>set((state)=>({
-    users:[...state.users, user]
-  }))
+  addUser: (user) =>
+    set((state) => ({
+      users: [
+        ...state.users, user
+      ],
+    })),
 }))
